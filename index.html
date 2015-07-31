@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FIRST-CHAT APP</title>
+<script src="/socket.io/socket.io.js"></script>
+<script src="jquery-1.11.3.js"></script>
+<style>
+
+      body { font: 18px Helvetica, Arial; }
+      
+</style>
+</head>
+<body style="background-color:lightskyblue">
+
+<h2 style="color:red;text-align:center"> *** A Chat Application using SOCKET.IO & NODE.JS ***</h2>
+
+<center>
+<textarea id="ta" rows="15" cols="50" style="border:2px solid black;font-size:17px" readonly></textarea><br>
+<form action="">
+<input id="msgb" size="40" height="10" autocomplete="off" style="border:2px solid black;font-size:17px;padding:4px"/>
+<button type="button" id="sub"style="background-color:cyan;padding:7px">send</button>
+</form>
+</center>
+
+<script>
+
+var name=prompt("please enter ur name");
+
+var socket = io();
+
+$('form').submit(function(){
+
+	var arr=[];
+	arr.push($('#msgb').val());
+	arr.push(name);
+	socket.emit('chat message',arr);
+	$('#msgb').val('');
+	return false;
+});
+
+socket.on('chat message',function(msg){
+
+		$('#ta').append(msg[1]+": "+msg[0]+'\n');
+
+		$("#ta").animate({
+    			scrollTop:$("#ta")[0].scrollHeight - $("#ta").height()
+		});
+		
+});
+
+</script>
+</body>
+</html>
